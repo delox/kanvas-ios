@@ -17,6 +17,7 @@ extension MTLDevice {
         let enumerator = FileManager.default.enumerator(atPath: path)
         var source = ""
         while let filename = enumerator?.nextObject() as? String {
+            print(filename)
             if filename == "shaders.metal" {
                 let fileURL = "\(path)/\(filename)"
                 

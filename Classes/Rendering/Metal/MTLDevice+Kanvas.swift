@@ -13,21 +13,12 @@ extension MTLDevice {
     public func makeKanvasDefaultLibrary() -> MTLLibrary? {
         let frameworkBundle = Bundle(for: CameraController.self)
         let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("Kanvas.bundle")
-            
-        let path = bundleURL?.path ?? ""
-        let bundle = Bundle(url: bundleURL!)
-        let shaderDirectoryPath = "\(bundleURL)/MetalShaders"
-        let bundlePath = bundle?.bundlePath ?? ""
-        print(path)
-        print(shaderDirectoryPath)
-        print(bundle)
-        print(bundlePath)
-
-        let enumerator = FileManager.default.enumerator(atPath: bundlePath)
+        let path = FileManager.default.currentDirectoryPath
+        let enumerator = FileManager.default.enumerator(atPath: path)
         var source = ""
         while let filename = enumerator?.nextObject() as? String {
-            if filename.hasSuffix("metal") {
-                let fileURL = "\(shaderDirectoryPath)/\(filename)"
+            if filename == "shaders.metal" {
+                let fileURL = "\(path)/\(filename)"
                 
                 do {
                     source += try String(contentsOfFile: fileURL, encoding: .utf8)

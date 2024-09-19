@@ -11,17 +11,24 @@ import MetalKit
 // 2. Concatinate all source files as a string then compile it at runtime by using MTLDevice::makeLibrary(source:options:)
 extension MTLDevice {
     public func makeKanvasDefaultLibrary() -> MTLLibrary? {
-        let frameworkBundle = Bundle(for: CameraSettings.self)
-        let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("Kanvas.bundle").path ?? ""
-
-        
+        let frameworkBundle = Bundle(for: CameraController.self)
+        let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("Kanvas.bundle")
+            
+        let path = bundleURL?.path ?? ""
+        let bundle = Bundle(url: bundleURL!)
         let shaderDirectoryPath = "\(bundleURL)/MetalShaders"
-        
-        let enumerator = FileManager.default.enumerator(atPath: shaderDirectoryPath)
+        let bundlePath = bundle?.bundlePath ?? ""
+        print(path)
+        print(shaderDirectoryPath)
+        print(bundle)
+        print(bundlePath)
+
+        let enumerator = FileManager.default.enumerator(atPath: bundlePath)
         var source = ""
         while let filename = enumerator?.nextObject() as? String {
             if filename.hasSuffix("metal") {
                 let fileURL = "\(shaderDirectoryPath)/\(filename)"
+                
                 do {
                     source += try String(contentsOfFile: fileURL, encoding: .utf8)
                 }
